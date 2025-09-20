@@ -1,0 +1,48 @@
+# Environment variables
+.env
+
+# Claude Code assistant files (development only)
+CLAUDE.md
+data/payloadcms/CLAUDE.md
+
+# Docker volumes and containers
+.docker/
+
+# PayloadCMS generated content (will be created during setup)
+data/payloadcms/src/
+data/payloadcms/package.json
+data/payloadcms/pnpm-lock.yaml
+data/payloadcms/node_modules/
+data/payloadcms/.next/
+data/payloadcms/public/
+data/payloadcms/.env
+data/payloadcms/tsconfig.json
+data/payloadcms/next.config.*
+data/payloadcms/tailwind.config.*
+data/payloadcms/postcss.config.*
+data/payloadcms/eslint.config.*
+data/payloadcms/.eslintrc.*
+data/payloadcms/prettier.config.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Testing and development artifacts
+coverage/
+.nyc_output/
+.coverage/

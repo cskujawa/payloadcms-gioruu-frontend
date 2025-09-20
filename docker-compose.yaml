@@ -1,0 +1,59 @@
+services:
+  payloadcms-app:
+    build:
+      context: ./data/payloadcms
+      dockerfile: Dockerfile.dev
+    container_name: payloadcms-app
+    restart: unless-stopped
+    networks:
+      - payloadcms
+      - proxy-payloadcms-to-smart-tilde
+    ports:
+      - "${PAYLOADCMS_HOST_PORT}:3000"
+    volumes:
+      - ./data/payloadcms:/app
+      - payloadcms_node_modules:/app/node_modules
+    depends_on:
+      payloadcms-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - DATABASE_URI=${DATABASE_URI}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/admin"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  payloadcms-db:
+    image: mongo:latest
+    container_name: payloadcms-db
+    restart: unless-stopped
+    networks:
+      - payloadcms
+    command:
+      - --storageEngine=wiredTiger
+    volumes:
+      - payloadcms_db_data:/data/db
+    logging:
+      driver: none
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+networks:
+  payloadcms:
+    name: payloadcms
+  
+  proxy-payloadcms-to-smart-tilde:
+    external: true
+    name: smart-tilde
+
+volumes:
+  payloadcms_db_data:
+  payloadcms_node_modules:
