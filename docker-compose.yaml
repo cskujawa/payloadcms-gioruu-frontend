@@ -49,10 +49,6 @@ services:
 networks:
   payloadcms:
     name: payloadcms
-  
-  proxy-payloadcms-to-smart-tilde:
-    external: true
-    name: smart-tilde
 
 volumes:
   payloadcms_db_data:
